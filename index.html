@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Все стили остаются без изменений — такие же, как в предоставленном коде */
         * {
             margin: 0;
             padding: 0;
@@ -493,7 +492,6 @@
             .result-title { font-size: 1.3rem; }
         }
 
-        /* Специальные стили для результатов */
         .extirpation-title {
             color: var(--danger);
             font-size: 2rem;
@@ -508,11 +506,74 @@
             text-transform: uppercase;
             margin-bottom: 10px;
         }
+
+        /* Стили для справочника */
+        .ref-content {
+            margin-top: 8px;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 24px;
+            font-size: 0.85rem;
+            display: none;
+            width: 100%;
+            overflow-x: hidden; /* предотвращаем выезд контейнера */
+        }
+        .ref-content.show {
+            display: block;
+        }
+        .ref-content ul {
+            margin-left: 20px;
+            color: #334155;
+        }
+        .ref-content .table-wrapper {
+            max-width: 100%;
+            overflow-x: auto;
+            margin-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+        }
+        .ref-content table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            min-width: 600px; /* для SOFA требуется минимум, но можно подобрать */
+            table-layout: auto; /* авто, чтобы колонки подстраивались */
+        }
+        .ref-content th, .ref-content td {
+            border: 1px solid rgba(2,132,199,0.2);
+            padding: 6px;
+            text-align: left;
+            vertical-align: top;
+            word-break: break-word;
+        }
+        .ref-content th {
+            background: rgba(2,132,199,0.1);
+            font-weight: 600;
+        }
+        .ref-content .table-caption {
+            font-weight: 600;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        /* Специально для таблицы SOFA – она широкая, оставляем min-width */
+        .ref-content .table-wrapper table {
+            min-width: 600px;
+        }
+        @media (max-width: 480px) {
+            .ref-content table {
+                font-size: 0.7rem;
+            }
+            .ref-content th, .ref-content td {
+                padding: 4px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Шапка (без изменений) -->
+        <!-- Шапка -->
         <div class="app-header">
             <div class="logo">
                 <img src="images/logo.jpg" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-heart-pulse\'></i>';" />
@@ -525,7 +586,7 @@
 
         <!-- Контент -->
         <div class="main-content" id="mainContent">
-            <!-- Главная (без изменений) -->
+            <!-- Главная -->
             <div class="tab-page active" id="pageHome">
                 <div class="glass-card" style="text-align: center;">
                     <img src="images/logo.jpg" alt="logo" style="width:80px; height:80px; border-radius:20px; margin-bottom:16px;" onerror="this.style.display='none'">
@@ -586,34 +647,152 @@
                 <div id="algorithmContainer"></div>
             </div>
 
-            <!-- Справочник (без изменений) -->
+            <!-- Справочник (полностью обновлён с горизонтальной прокруткой для таблиц) -->
             <div class="tab-page" id="pageRef">
                 <div class="glass-card">
-                    <h3><i class="fas fa-book-open" style="margin-right:8px;"></i>Критерии сохранения матки</h3>
-                    <ul style="margin-top:12px; list-style:none; font-size:0.85rem;">
-                        <li style="margin-bottom:8px;">✓ Локализованный процесс</li>
-                        <li style="margin-bottom:8px;">✓ Отсутствие распространённого некроза</li>
-                        <li style="margin-bottom:8px;">✓ Возможность радикального иссечения</li>
-                        <li style="margin-bottom:8px;">✓ Стабильная гемодинамика</li>
-                    </ul>
-                </div>
-                <div class="glass-card">
-                    <h3><i class="fas fa-wind" style="margin-right:8px;"></i>Показания к ВАЛ</h3>
-                    <p><span class="badge">Абсолютные</span></p>
-                    <ul style="margin:8px 0 16px 20px; font-size:0.85rem;">
-                        <li>Тяжёлый диффузный перитонит</li>
-                        <li>Анаэробный перитонит</li>
-                        <li>Синдром интраабдоминальной гипертензии</li>
-                    </ul>
-                    <p><span class="badge">Относительные</span></p>
-                    <ul style="margin:8px 0 0 20px; font-size:0.85rem;">
-                        <li>Септический шок (damage control)</li>
-                        <li>Массивный отёк кишечника</li>
-                    </ul>
+                    <h3 style="margin-bottom:16px;">Справочные материалы</h3>
+                    <div class="criteria-grid">
+                        <!-- 1. Противопоказания к лапароскопии -->
+                        <div class="criteria-item" onclick="toggleRef(1)">
+                            <span>1. Противопоказания к лапароскопии</span>
+                            <i class="fas fa-chevron-down" id="ref-icon-1" style="margin-left:auto; transition: transform 0.2s;"></i>
+                        </div>
+                        <div id="ref-content-1" class="ref-content">
+                            <ul>
+                                <li>Распространенный (диффузный, разлитой) гнойный перитонит</li>
+                                <li>Септический шок</li>
+                                <li>Вовлечение в гнойный процесс смежных органов (кишечника, мочевого пузыря) с формированием инфильтратов или абсцессов сложной анатомии</li>
+                                <li>Выраженный спаечный процесс в брюшной полости</li>
+                                <li>Общие противопоказания к лапароскопии</li>
+                            </ul>
+                        </div>
+
+                        <!-- 2. Показания к экстирпации матки с трубами -->
+                        <div class="criteria-item" onclick="toggleRef(2)">
+                            <span>2. Показания к экстирпации матки с трубами</span>
+                            <i class="fas fa-chevron-down" id="ref-icon-2" style="margin-left:auto; transition: transform 0.2s;"></i>
+                        </div>
+                        <div id="ref-content-2" class="ref-content">
+                            <ul>
+                                <li>Диффузный гнойный или фибринозно-гнойный перитонит</li>
+                                <li>Массивный некроз стенок матки, распространенный метротромбофлебит</li>
+                                <li>Септический шок</li>
+                            </ul>
+                        </div>
+
+                        <!-- 3. Показания к наложению ВАЛ -->
+                        <div class="criteria-item" onclick="toggleRef(3)">
+                            <span>3. Показания к наложению ВАЛ</span>
+                            <i class="fas fa-chevron-down" id="ref-icon-3" style="margin-left:auto; transition: transform 0.2s;"></i>
+                        </div>
+                        <div id="ref-content-3" class="ref-content">
+                            <div class="table-caption">Абсолютные (жизнеугрожающие)</div>
+                            <div class="table-wrapper">
+                                <table>
+                                    <tr><th>Показание</th><th>Ключевой критерий/Пояснение</th></tr>
+                                    <tr><td>Тяжелый диффузный перитонит</td><td>Множественные межкишечные абсцессы, фибринозно-гнойные наложения. Требуются этапные санации.</td></tr>
+                                    <tr><td>Анаэробный перитонит (клостридиальная инфекция)</td><td>Обширный некроз тканей, газообразование. Необходим визуальный контроль динамики некроза.</td></tr>
+                                    <tr><td>Синдром интраабдоминальной гипертензии (СИАГ)</td><td>Внутрибрюшное давление > 20-25 мм рт. ст. с угрозой или развитием компартмент-синдрома. Сведение апоневроза противопоказано.</td></tr>
+                                    <tr><td>Обширное инфицирование брюшной стенки</td><td>Флегмона, некротизирующий фасциит. Ушивание приведет к прогрессированию инфекции.</td></tr>
+                                </table>
+                            </div>
+                            <div class="table-caption" style="margin-top:16px;">Относительные (ситуации высокого риска)</div>
+                            <div class="table-wrapper">
+                                <table>
+                                    <tr><th>Показание</th><th>Ключевой критерий/Пояснение</th></tr>
+                                    <tr><td>Септический шок, нестабильная гемодинамика</td><td>Тактика «damage control surgery»: быстрое удаление источника, временное закрытие, окончательная санация - через 24-48 часов.</td></tr>
+                                    <tr><td>Массивный отек кишечника и забрюшинной клетчатки</td><td>Кишечник не помещается в брюшной полости из-за пареза и капиллярной утечки. Риск эвентрации и компартмент-синдрома при ушивании.</td></tr>
+                                    <tr><td>Коагулопатия (диффузное капиллярное кровотечение)</td><td>Вакуум-система позволяет контролировать кровотечение и эвакуировать кровь (тампонада + дренирование).</td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 4. Противопоказания к наложению ВАЛ -->
+                        <div class="criteria-item" onclick="toggleRef(4)">
+                            <span>4. Противопоказания к наложению ВАЛ</span>
+                            <i class="fas fa-chevron-down" id="ref-icon-4" style="margin-left:auto; transition: transform 0.2s;"></i>
+                        </div>
+                        <div id="ref-content-4" class="ref-content">
+                            <div class="table-wrapper">
+                                <table>
+                                    <tr><th>Противопоказание</th><th>Примечание</th></tr>
+                                    <tr><td>Недренированные абсцессы / кишечные свищи</td><td>Требуют изоляции или устранения до установки ВАЛ</td></tr>
+                                    <tr><td>Отсутствие условий для релапаротомии</td><td>Техническая невозможность повторных вмешательств</td></tr>
+                                    <tr><td>Терминальное состояние с полиорганной недостаточностью</td><td>Относительное противопоказание, зависит от корригируемости состояния</td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 5. Условия для наложения ВАЛ -->
+                        <div class="criteria-item" onclick="toggleRef(5)">
+                            <span>5. Условия для наложения ВАЛ</span>
+                            <i class="fas fa-chevron-down" id="ref-icon-5" style="margin-left:auto; transition: transform 0.2s;"></i>
+                        </div>
+                        <div id="ref-content-5" class="ref-content">
+                            <div class="table-caption">1. Организационные и технические условия</div>
+                            <div class="table-wrapper">
+                                <table>
+                                    <tr><th>Условие</th><th>Требования</th></tr>
+                                    <tr><td>Наличие аппарата NPWT</td><td>Регулируемое отрицательное давление (от -50 до -150 мм рт. ст.)</td></tr>
+                                    <tr><td>Специальные наборы</td><td>Полиуретановая губка/перфорированная пленка, герметичная повязка, дренажная трубка (см. патент РФ № 2816058, 2024)</td></tr>
+                                    <tr><td>Возможность релапаротомий</td><td>Готовность хирургической бригады и реанимации к повторным операциям каждые 24–72 ч</td></tr>
+                                    <tr><td>Энтеральный зонд</td><td>Обязательная назоинтестинальная интубация для декомпрессии кишечника</td></tr>
+                                </table>
+                            </div>
+                            <div class="table-caption" style="margin-top:16px;">2. Клинико-хирургические условия</div>
+                            <div class="table-wrapper">
+                                <table>
+                                    <tr><th>Условие</th><th>Действие</th></tr>
+                                    <tr><td>Устранение источника инфекции</td><td>Радикальное иссечение некротизированного миометрия + метропластика (или экстирпация матки)</td></tr>
+                                    <tr><td>Защита кишечника</td><td>Изоляция петель кишечника от губки: лист перфорированной пленки (эпиплопластика) или протекторная пленка</td></tr>
+                                    <tr><td>Герметичность</td><td>Герметичное закрытие кожи вокруг системы для создания вакуума</td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 6. Шкала SOFA (с горизонтальной прокруткой) -->
+                        <div class="criteria-item" onclick="toggleRef(6)">
+                            <span>6. Шкала SOFA</span>
+                            <i class="fas fa-chevron-down" id="ref-icon-6" style="margin-left:auto; transition: transform 0.2s;"></i>
+                        </div>
+                        <div id="ref-content-6" class="ref-content">
+                            <p><strong>Sequential Organ Failure Assessment</strong></p>
+                            <div class="table-wrapper">
+                                <table>
+                                    <tr><th>Система</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
+                                    <tr><td>Дыхание PaO2/FiO2, мм рт. ст.</td><td>>400</td><td><400</td><td><300</td><td><200 с респ. подд.</td><td><100 с респ. подд.</td></tr>
+                                    <tr><td>Коагуляция Тромбоциты, x10³/мм³</td><td>>150</td><td><150</td><td><100</td><td><50</td><td><20</td></tr>
+                                    <tr><td>Печень Билирубин, мкмоль/л</td><td><20</td><td>20-30</td><td>33-101</td><td>102-204</td><td>>204</td></tr>
+                                    <tr><td>Сердечно-сосудистая Гипотензия</td><td>АДср >70</td><td>АДср <70</td><td>Допамин <5 или добутамин</td><td>Допамин 5-15, адреналин <0.1, норадреналин <0.1</td><td>Допамин >15, адреналин >0.1, норадреналин >0.1</td></tr>
+                                    <tr><td>ЦНС Шкала комы Глазго</td><td>15</td><td>13-14</td><td>10-12</td><td>6-9</td><td><6</td></tr>
+                                    <tr><td>Почки Креатинин, мг/дл (ммоль/л)</td><td><1.2 (110)</td><td>1.2-1.9 (110-170)</td><td>2.0-3.4 (171-299)</td><td>3.5-4.9 (300-440)</td><td>>4.9 (440)</td></tr>
+                                    <tr><td colspan="2"></td><td colspan="2"></td><td>Диурез <500 мл/сут</td><td>Диурез <200 мл/сут</td></tr>
+                                </table>
+                            </div>
+                            <p><strong>Ключ (интерпретация):</strong> SOFA индекс равен сумме всех шести показателей. Минимальный общий балл: 0, максимальный: 24. Чем выше балл, тем больше дисфункция органа.</p>
+                        </div>
+
+                        <!-- 7. Шкала qSOFA -->
+                        <div class="criteria-item" onclick="toggleRef(7)">
+                            <span>7. Шкала qSOFA</span>
+                            <i class="fas fa-chevron-down" id="ref-icon-7" style="margin-left:auto; transition: transform 0.2s;"></i>
+                        </div>
+                        <div id="ref-content-7" class="ref-content">
+                            <div class="table-wrapper">
+                                <table>
+                                    <tr><th>Показатель</th><th>qSOFA, баллы</th></tr>
+                                    <tr><td>Снижение АД (АД сист. ≤100 мм рт.ст.)</td><td>1</td></tr>
+                                    <tr><td>Увеличение частоты дыхания (≥22/мин)</td><td>1</td></tr>
+                                    <tr><td>Нарушение сознания (по шкале Глазго <15)</td><td>1</td></tr>
+                                </table>
+                            </div>
+                            <p><strong>Интерпретация:</strong> Количество баллов по шкале qSOFA 2 и более — сильный предиктор неблагоприятного исхода, пациентка требует перевода в отделение реанимации и интенсивной терапии.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- О проекте (без изменений) -->
+            <!-- О проекте -->
             <div class="tab-page" id="pageAbout">
                 <div class="glass-card">
                     <h2 style="margin-bottom:12px;">О проекте</h2>
@@ -635,7 +814,7 @@
                 <div class="version-footer">Версия 1.0 (2026)</div>
             </div>
 
-            <!-- Ссылки (без изменений) -->
+            <!-- Ссылки -->
             <div class="tab-page" id="pageLinks">
                 <div class="glass-card">
                     <h3 style="margin-bottom:16px;">Полезные ссылки</h3>
@@ -671,7 +850,7 @@
             </div>
         </div>
 
-        <!-- Таб-бар (без изменений) -->
+        <!-- Таб-бар -->
         <div class="tab-bar">
             <div class="tab-item active" data-tab="0"><i class="fas fa-home"></i><span>Главная</span></div>
             <div class="tab-item" data-tab="1"><i class="fas fa-stethoscope"></i><span>Алгоритм</span></div>
@@ -682,239 +861,259 @@
     </div>
 
     <script>
-    // ---------- Переключение табов (без изменений) ----------
-    const tabItems = document.querySelectorAll('.tab-item');
-    const pages = document.querySelectorAll('.tab-page');
-    function switchTab(index) {
-        tabItems.forEach((item, i) => item.classList.toggle('active', i === index));
-        pages.forEach((page, i) => page.classList.toggle('active', i === index));
-        if (index === 1) initAlgorithm(); // алгоритм
-    }
-    tabItems.forEach((item, idx) => item.addEventListener('click', () => switchTab(idx)));
-
-    // Функция для кнопки "Начать алгоритм" на главной
-    function startAlgorithm() {
-        switchTab(1);
-        resetAlgorithm();
-        showStep('diagnosis');
-    }
-
-    // ---------- НОВЫЙ АЛГОРИТМ (с исправленными кнопками) ----------
-    let history = [];
-    let currentStepId = 'diagnosis';
-
-    const renderers = {
-        diagnosis: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card" style="text-align:center;">
-                    <h2 style="font-size:1.6rem; margin-bottom:12px;">Акушерский перитонит</h2>
-                    <p style="color:#334155; margin-bottom:24px; font-size:0.9rem;">Подтверждён диагноз. Необходима предоперационная подготовка.</p>
-                    <button class="btn btn-primary" onclick="goToStep('preop')">Далее <i class="fas fa-arrow-right"></i></button>
-                </div>
-            `;
-        },
-        preop: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card" style="text-align:center;">
-                    <h2 style="font-size:1.6rem; margin-bottom:12px;">Предоперационная подготовка</h2>
-                    <p style="color:#334155; margin-bottom:16px; font-size:0.9rem;">Инфузия, антибиотики, коррекция гомеостаза (2–4 часа).</p>
-                    <p style="color:#334155; margin-bottom:24px; font-size:0.9rem;">После завершения переходите к оценке доступа.</p>
-                    <button class="btn btn-primary" onclick="goToStep('contraLap')">Далее <i class="fas fa-arrow-right"></i></button>
-                </div>
-            `;
-        },
-        contraLap: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card">
-                    <h2 style="font-size:1.4rem; margin-bottom:12px;">Есть противопоказания к лапароскопии?</h2>
-                    <div class="info-card" style="margin-top:0; margin-bottom:20px;">
-                        <ul style="margin-left:20px; color:#334455;">
-                            <li>Распространённый (диффузный) гнойный перитонит</li>
-                            <li>Септический шок</li>
-                            <li>Вовлечение смежных органов (инфильтраты, абсцессы)</li>
-                            <li>Выраженный спаечный процесс</li>
-                            <li>Общие противопоказания к лапароскопии</li>
-                        </ul>
-                    </div>
-                    <div style="display: flex; gap: 12px; justify-content: center;">
-                        <button class="btn btn-primary" onclick="goToStep('laparotomy')">ДА</button>
-                        <button class="btn btn-primary" onclick="goToStep('diagnosticLap')">НЕТ</button>
-                    </div>
-                </div>
-            `;
-        },
-        laparotomy: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card">
-                    <h2 style="font-size:1.4rem; margin-bottom:16px;">Нижнесрединная лапаротомия</h2>
-                    <p style="margin-bottom:16px; font-weight:600;">Оценка очага инфекции</p>
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <button class="btn btn-primary" onclick="goToStep('conditionsEvaluation', { from: 'laparotomySuture' })">Секвестрация швов на матке</button>
-                        <button class="btn btn-primary" onclick="goToStep('purulentPeritonitis', { from: 'laparotomyOther' })">Другие причины</button>
-                    </div>
-                </div>
-            `;
-        },
-        diagnosticLap: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card">
-                    <h2 style="font-size:1.4rem; margin-bottom:16px;">Диагностическая лапароскопия</h2>
-                    <p style="margin-bottom:16px; font-weight:600;">Оценка очага инфекции</p>
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <button class="btn btn-primary" onclick="goToStep('conversion')">Секвестрация швов на матке</button>
-                        <button class="btn btn-primary" onclick="goToStep('purulentPeritonitis', { from: 'lapOther' })">Другие причины</button>
-                    </div>
-                </div>
-            `;
-        },
-        conversion: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card" style="text-align:center;">
-                    <h2 style="font-size:2rem; margin-bottom:12px; color:var(--warning);">КОНВЕРСИЯ</h2>
-                    <p style="margin-bottom:24px;">Переход к лапаротомии.</p>
-                    <button class="btn btn-primary" onclick="goToStep('conditionsEvaluation', { from: 'conversion' })">Далее</button>
-                </div>
-            `;
-        },
-        conditionsEvaluation: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card">
-                    <h2 style="font-size:1.4rem; margin-bottom:16px;">Оценка условий органосохраняющего лечения</h2>
-                    <div class="info-card" style="margin-top:0; margin-bottom:20px;">
-                        <ul style="margin-left:20px; color:#334455;">
-                            <li>✓ Локализованный процесс</li>
-                            <li>✓ Отсутствие распространённого некроза миометрия и метротромбофлебита</li>
-                            <li>✓ Возможность радикального иссечения</li>
-                            <li>✓ Стабильная гемодинамика</li>
-                        </ul>
-                    </div>
-                    <p style="margin-bottom:16px;">Условия соблюдены?</p>
-                    <div style="display: flex; gap: 12px; justify-content: center;">
-                        <button class="btn btn-primary" onclick="goToStep('extirpation')">НЕТ</button>
-                        <button class="btn btn-primary" onclick="goToStep('metroplasty')">ДА</button>
-                    </div>
-                </div>
-            `;
-        },
-        extirpation: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card result-screen">
-                    <div class="extirpation-title">ЭКСТИРПАЦИЯ</div>
-                    <p style="font-size:1.2rem; margin-bottom:16px;">рекомендована вакуум-ассистированная лапаростомия</p>
-                    <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
-                </div>
-            `;
-        },
-        metroplasty: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card result-screen">
-                    <div class="metroplasty-title">МЕТРОПЛАСТИКА</div>
-                    <p style="font-size:1.2rem; margin-bottom:16px;">рекомендована вакуум-ассистированная лапаростомия</p>
-                    <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
-                </div>
-            `;
-        },
-        purulentPeritonitis: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card">
-                    <h2 style="font-size:1.4rem; margin-bottom:16px;">Санация очага инфекции</h2>
-                    <p style="margin-bottom:16px;">Перитонит гнойный распространённый?</p>
-                    <div style="display: flex; gap: 12px; justify-content: center;">
-                        <button class="btn btn-primary" onclick="goToStep('valRecommendation')">ДА</button>
-                        <button class="btn btn-primary" onclick="goToStep('operationEnd')">НЕТ</button>
-                    </div>
-                </div>
-            `;
-        },
-        valRecommendation: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card result-screen">
-                    <div class="result-icon"><i class="fas fa-wind" style="color:var(--warning);"></i></div>
-                    <h2 class="result-title">рекомендована вакуум-ассистированная лапаростомия</h2>
-                    <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
-                </div>
-            `;
-        },
-        operationEnd: () => {
-            const container = document.getElementById('algorithmContainer');
-            container.innerHTML = `
-                <div class="glass-card result-screen">
-                    <div class="result-icon"><i class="fas fa-flag-checkered" style="color:var(--success);"></i></div>
-                    <h2 class="result-title">Завершение операции</h2>
-                    <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
-                </div>
-            `;
+        // ---------- Переключение табов ----------
+        const tabItems = document.querySelectorAll('.tab-item');
+        const pages = document.querySelectorAll('.tab-page');
+        function switchTab(index) {
+            tabItems.forEach((item, i) => item.classList.toggle('active', i === index));
+            pages.forEach((page, i) => page.classList.toggle('active', i === index));
+            if (index === 1) initAlgorithm(); // алгоритм
         }
-    };
+        tabItems.forEach((item, idx) => item.addEventListener('click', () => switchTab(idx)));
 
-    function goToStep(stepId, context = {}) {
-        history.push(currentStepId);
-        currentStepId = stepId;
-        renderers[stepId]();
-        updateBackButton();
-    }
-
-    function goBack() {
-        if (history.length > 0) {
-            currentStepId = history.pop();
-            renderers[currentStepId]();
-            updateBackButton();
-        }
-    }
-
-    function updateBackButton() {
-        const container = document.getElementById('algorithmContainer');
-        let backBtn = document.getElementById('algorithmBackBtn');
-        if (!backBtn) {
-            backBtn = document.createElement('button');
-            backBtn.id = 'algorithmBackBtn';
-            backBtn.className = 'btn btn-primary'; // сделаем тоже яркой
-            backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Назад';
-            backBtn.style.position = 'sticky';
-            backBtn.style.bottom = '10px';
-            backBtn.style.marginTop = '20px';
-            backBtn.style.width = '100%';
-            backBtn.onclick = goBack;
-            container.appendChild(backBtn);
-        }
-        backBtn.style.display = history.length > 0 ? 'block' : 'none';
-    }
-
-    function resetAlgorithm() {
-        history = [];
-        currentStepId = 'diagnosis';
-        renderers.diagnosis();
-        updateBackButton();
-    }
-
-    function initAlgorithm() {
-        if (!document.getElementById('algorithmContainer').innerHTML.trim()) {
+        // Функция для кнопки "Начать алгоритм" на главной
+        function startAlgorithm() {
+            switchTab(1);
             resetAlgorithm();
         }
-    }
 
-    // Экспорт в глобальную область
-    window.goToStep = goToStep;
-    window.goBack = goBack;
-    window.resetAlgorithm = resetAlgorithm;
-    window.startAlgorithm = startAlgorithm;
-    window.initAlgorithm = initAlgorithm;
+        // ---------- АЛГОРИТМ (обновлённый, все кнопки btn-primary) ----------
+        let history = [];
+        let currentStepId = 'diagnosis';
 
-    // Инициализация при загрузке
-    if (document.querySelector('.tab-page.active')?.id === 'pageAlgorithm') {
-        initAlgorithm();
-    }
-</script>
+        const renderers = {
+            diagnosis: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card" style="text-align:center;">
+                        <h2 style="font-size:1.6rem; margin-bottom:12px;">Акушерский перитонит</h2>
+                        <p style="color:#334155; margin-bottom:24px; font-size:0.9rem;">Подтверждён диагноз. Необходима предоперационная подготовка.</p>
+                        <button class="btn btn-primary" onclick="goToStep('preop')">Далее <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                `;
+            },
+            preop: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card" style="text-align:center;">
+                        <h2 style="font-size:1.6rem; margin-bottom:12px;">Предоперационная подготовка</h2>
+                        <p style="color:#334155; margin-bottom:16px; font-size:0.9rem;">Инфузия, антибиотики, коррекция гомеостаза (2–4 часа).</p>
+                        <p style="color:#334155; margin-bottom:24px; font-size:0.9rem;">После завершения переходите к оценке доступа.</p>
+                        <button class="btn btn-primary" onclick="goToStep('contraLap')">Далее <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                `;
+            },
+            contraLap: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card">
+                        <h2 style="font-size:1.4rem; margin-bottom:12px;">Есть противопоказания к лапароскопии?</h2>
+                        <div class="info-card" style="margin-top:0; margin-bottom:20px;">
+                            <ul style="margin-left:20px; color:#334455;">
+                                <li>Распространённый (диффузный) гнойный перитонит</li>
+                                <li>Септический шок</li>
+                                <li>Вовлечение смежных органов (инфильтраты, абсцессы)</li>
+                                <li>Выраженный спаечный процесс</li>
+                                <li>Общие противопоказания к лапароскопии</li>
+                            </ul>
+                        </div>
+                        <div style="display: flex; gap: 12px; justify-content: center;">
+                            <button class="btn btn-primary" onclick="goToStep('laparotomy')">ДА</button>
+                            <button class="btn btn-primary" onclick="goToStep('diagnosticLap')">НЕТ</button>
+                        </div>
+                    </div>
+                `;
+            },
+            laparotomy: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card">
+                        <h2 style="font-size:1.4rem; margin-bottom:16px;">Нижнесрединная лапаротомия</h2>
+                        <p style="margin-bottom:16px; font-weight:600;">Оценка очага инфекции</p>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <button class="btn btn-primary" onclick="goToStep('conditionsEvaluation', { from: 'laparotomySuture' })">Секвестрация швов на матке</button>
+                            <button class="btn btn-primary" onclick="goToStep('purulentPeritonitis', { from: 'laparotomyOther' })">Другие причины</button>
+                        </div>
+                    </div>
+                `;
+            },
+            diagnosticLap: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card">
+                        <h2 style="font-size:1.4rem; margin-bottom:16px;">Диагностическая лапароскопия</h2>
+                        <p style="margin-bottom:16px; font-weight:600;">Оценка очага инфекции</p>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <button class="btn btn-primary" onclick="goToStep('conversion')">Секвестрация швов на матке</button>
+                            <button class="btn btn-primary" onclick="goToStep('purulentPeritonitis', { from: 'lapOther' })">Другие причины</button>
+                        </div>
+                    </div>
+                `;
+            },
+            conversion: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card" style="text-align:center;">
+                        <h2 style="font-size:2rem; margin-bottom:12px; color:var(--warning);">КОНВЕРСИЯ</h2>
+                        <p style="margin-bottom:24px;">Переход к лапаротомии.</p>
+                        <button class="btn btn-primary" onclick="goToStep('conditionsEvaluation', { from: 'conversion' })">Далее</button>
+                    </div>
+                `;
+            },
+            conditionsEvaluation: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card">
+                        <h2 style="font-size:1.4rem; margin-bottom:16px;">Оценка условий органосохраняющего лечения</h2>
+                        <div class="info-card" style="margin-top:0; margin-bottom:20px;">
+                            <ul style="margin-left:20px; color:#334455;">
+                                <li>✓ Локализованный процесс</li>
+                                <li>✓ Отсутствие распространённого некроза миометрия и метротромбофлебита</li>
+                                <li>✓ Возможность радикального иссечения</li>
+                                <li>✓ Стабильная гемодинамика</li>
+                            </ul>
+                        </div>
+                        <p style="margin-bottom:16px;">Условия соблюдены?</p>
+                        <div style="display: flex; gap: 12px; justify-content: center;">
+                            <button class="btn btn-primary" onclick="goToStep('extirpation')">НЕТ</button>
+                            <button class="btn btn-primary" onclick="goToStep('metroplasty')">ДА</button>
+                        </div>
+                    </div>
+                `;
+            },
+            extirpation: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card result-screen">
+                        <div class="extirpation-title">ЭКСТИРПАЦИЯ</div>
+                        <p style="font-size:1.2rem; margin-bottom:16px;">рекомендована вакуум-ассистированная лапаростомия</p>
+                        <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
+                    </div>
+                `;
+            },
+            metroplasty: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card result-screen">
+                        <div class="metroplasty-title">МЕТРОПЛАСТИКА</div>
+                        <p style="font-size:1.2rem; margin-bottom:16px;">рекомендована вакуум-ассистированная лапаростомия</p>
+                        <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
+                    </div>
+                `;
+            },
+            purulentPeritonitis: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card">
+                        <h2 style="font-size:1.4rem; margin-bottom:16px;">Санация очага инфекции</h2>
+                        <p style="margin-bottom:16px;">Перитонит гнойный распространённый?</p>
+                        <div style="display: flex; gap: 12px; justify-content: center;">
+                            <button class="btn btn-primary" onclick="goToStep('valRecommendation')">ДА</button>
+                            <button class="btn btn-primary" onclick="goToStep('operationEnd')">НЕТ</button>
+                        </div>
+                    </div>
+                `;
+            },
+            valRecommendation: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card result-screen">
+                        <div class="result-icon"><i class="fas fa-wind" style="color:var(--warning);"></i></div>
+                        <h2 class="result-title">рекомендована вакуум-ассистированная лапаростомия</h2>
+                        <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
+                    </div>
+                `;
+            },
+            operationEnd: () => {
+                const container = document.getElementById('algorithmContainer');
+                container.innerHTML = `
+                    <div class="glass-card result-screen">
+                        <div class="result-icon"><i class="fas fa-flag-checkered" style="color:var(--success);"></i></div>
+                        <h2 class="result-title">Завершение операции</h2>
+                        <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
+                    </div>
+                `;
+            }
+        };
+
+        function goToStep(stepId, context = {}) {
+            history.push(currentStepId);
+            currentStepId = stepId;
+            renderers[stepId]();
+            updateBackButton();
+        }
+
+        function goBack() {
+            if (history.length > 0) {
+                currentStepId = history.pop();
+                renderers[currentStepId]();
+                updateBackButton();
+            }
+        }
+
+        function updateBackButton() {
+            const container = document.getElementById('algorithmContainer');
+            let backBtn = document.getElementById('algorithmBackBtn');
+            if (!backBtn) {
+                backBtn = document.createElement('button');
+                backBtn.id = 'algorithmBackBtn';
+                backBtn.className = 'btn btn-primary';
+                backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Назад';
+                backBtn.style.position = 'sticky';
+                backBtn.style.bottom = '10px';
+                backBtn.style.marginTop = '20px';
+                backBtn.style.width = '100%';
+                backBtn.onclick = goBack;
+                container.appendChild(backBtn);
+            }
+            backBtn.style.display = history.length > 0 ? 'block' : 'none';
+        }
+
+        function resetAlgorithm() {
+            history = [];
+            currentStepId = 'diagnosis';
+            renderers.diagnosis();
+            updateBackButton();
+        }
+
+        function initAlgorithm() {
+            if (!document.getElementById('algorithmContainer').innerHTML.trim()) {
+                resetAlgorithm();
+            }
+        }
+
+        // ---------- Справочник (функция аккордеона) ----------
+        function toggleRef(id) {
+            const content = document.getElementById(`ref-content-${id}`);
+            const icon = document.getElementById(`ref-icon-${id}`);
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Скрываем все остальные открытые контенты
+                document.querySelectorAll('.ref-content').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('[id^="ref-icon-"]').forEach(el => {
+                    el.style.transform = 'rotate(0deg)';
+                });
+                content.classList.add('show');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Экспорт функций в глобальную область
+        window.goToStep = goToStep;
+        window.goBack = goBack;
+        window.resetAlgorithm = resetAlgorithm;
+        window.startAlgorithm = startAlgorithm;
+        window.initAlgorithm = initAlgorithm;
+        window.toggleRef = toggleRef;
+
+        // Инициализация при загрузке (если активна вкладка алгоритма)
+        if (document.querySelector('.tab-page.active')?.id === 'pageAlgorithm') {
+            initAlgorithm();
+        }
+    </script>
 </body>
 </html>
