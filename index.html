@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Перитонит: стратегия сохранения матки</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Все стили остаются без изменений — такие же, как в предоставленном коде */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            background: linear-gradient(145deg, #dbeafe 0%, #b7e0ff 100%);
+        }
+
+        :root {
+            --bg-gradient: linear-gradient(145deg, #dbeafe 0%, #b7e0ff 100%);
+            --primary: #0369a1;
+            --primary-dark: #075985;
+            --primary-light: #7ab7e0;
+            --secondary: #c084fc;
+            --accent: #fbbf24;
+            --success: #059669;
+            --danger: #b91c1c;
+            --warning: #d97706;
+            --text-primary: #0c4a6e;
+            --text-secondary: #1e293b;
+            --glass-border: rgba(2, 132, 199, 0.25);
+            --shadow-card: 0 10px 25px -8px rgba(2, 84, 130, 0.3);
+            --transition: all 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-primary);
+            padding: 0;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-width: 480px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(25px);
+            border-left: 1px solid var(--glass-border);
+            border-right: 1px solid var(--glass-border);
+            box-shadow: 0 0 40px rgba(3, 105, 161, 0.2);
+        }
+
+        .app-header {
+            padding: 16px 20px 8px;
+            border-bottom: 1px solid rgba(2, 132, 199, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 8px 18px rgba(2,132,199,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .header-text h1 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #075985;
+            line-height: 1.2;
+        }
+        .header-text p {
+            color: #0369a1;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 16px 12px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-light) #e0f2fe;
+        }
+        .main-content::-webkit-scrollbar { width: 4px; }
+        .main-content::-webkit-scrollbar-track { background: #e0f2fe; }
+        .main-content::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 8px; }
+
+        .tab-bar {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(2,132,199,0.2);
+            display: flex;
+            justify-content: space-around;
+            padding: 6px 8px 10px;
+            flex-shrink: 0;
+        }
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            color: #7ba9c9;
+            font-size: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 6px 10px;
+            border-radius: 30px;
+            background: transparent;
+        }
+        .tab-item i {
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        .tab-item.active {
+            color: white;
+            background: var(--primary);
+            box-shadow: 0 8px 20px rgba(2,132,199,0.4);
+            transform: translateY(-2px);
+        }
+        .tab-item.active i {
+            transform: scale(1.05);
+        }
+
+        .glass-card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(255,255,255,0.8);
+            transition: var(--transition);
+            animation: cardAppear 0.3s ease-out;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -8px rgba(2,132,199,0.3);
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: linear-gradient(145deg, var(--primary-light), #f0f9ff);
+            color: #075985;
+            box-shadow: 0 2px 8px rgba(2,132,199,0.15);
+        }
+
+        .progress-container {
+            margin: 4px 0 16px;
+        }
+        .progress-track {
+            height: 6px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 9999px;
+            box-shadow: 0 0 12px var(--primary);
+            transition: width 0.3s;
+        }
+        .step-dots {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.6);
+            transition: var(--transition);
+        }
+        .step-dot.active {
+            background: var(--primary);
+            transform: scale(1.4);
+            box-shadow: 0 0 15px var(--primary);
+        }
+        .step-dot.completed {
+            background: var(--success);
+        }
+
+        .btn {
+            border: none;
+            background: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 6px 16px rgba(2,132,199,0.15);
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 10px 22px rgba(2,132,199,0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 18px 30px rgba(2,132,199,0.4);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(5px);
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .criteria-grid {
+            display: grid;
+            gap: 12px;
+        }
+        .criteria-item {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(5px);
+            border: 2px solid transparent;
+            border-radius: 24px;
+            padding: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .criteria-item:hover {
+            transform: translateX(6px);
+            background: white;
+            box-shadow: 0 10px 22px rgba(2,132,199,0.1);
+        }
+        .criteria-item.selected {
+            border-color: var(--primary);
+            background: linear-gradient(145deg, white, #f0f9ff);
+            box-shadow: 0 10px 22px rgba(2,132,199,0.15);
+        }
+        .criteria-item.disabled {
+            opacity: 0.7;
+            pointer-events: none;
+            background: #f1f5f9;
+        }
+        .criteria-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            flex-shrink: 0;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,0.5);
+            border-radius: 24px;
+            padding: 16px;
+            margin-top: 16px;
+            border-left: 5px solid var(--accent);
+            font-size: 0.85rem;
+        }
+
+        .authors-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .author-card {
+            display: flex;
+            gap: 14px;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 28px;
+            padding: 14px;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.8);
+            transition: var(--transition);
+        }
+        .author-card:hover {
+            transform: translateX(6px);
+            background: white;
+            box-shadow: 0 12px 22px rgba(2,132,199,0.1);
+        }
+        .author-photo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+        }
+        .author-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .author-info h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            color: #075985;
+        }
+        .author-info p {
+            font-size: 0.75rem;
+            color: #0284c7;
+            margin-bottom: 2px;
+        }
+        .contribution {
+            font-size: 0.65rem;
+            color: #334155;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            background: white;
+            border: 1px solid rgba(2,132,199,0.2);
+            border-radius: 26px;
+            padding: 16px;
+            margin-bottom: 14px;
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.03);
+        }
+        .link-card:hover {
+            transform: translateX(6px);
+            background: #f8fcff;
+            border-color: var(--primary);
+            box-shadow: 0 14px 24px rgba(2,132,199,0.15);
+        }
+        .link-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--primary-dark);
+            flex-shrink: 0;
+        }
+        .link-text {
+            flex: 1;
+        }
+        .link-text strong {
+            font-size: 0.9rem;
+            color: #075985;
+        }
+        .link-text small {
+            font-size: 0.7rem;
+            color: #5f7d95;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .contact-card {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        .contact-title {
+            font-weight: 700;
+            color: #075985;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        .contact-email {
+            font-size: 0.9rem;
+            color: #0369a1;
+            text-decoration: none;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 40px;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid rgba(2,132,199,0.1);
+        }
+        .contact-name {
+            margin-top: 6px;
+            color: #334155;
+            font-size: 0.8rem;
+        }
+
+        .result-screen {
+            text-align: center;
+            padding: 12px 0;
+        }
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            word-break: break-word;
+        }
+        .result-details {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 28px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .version-footer {
+            text-align: center;
+            margin-top: 16px;
+            color: #64748b;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .tab-page { display: none; }
+        .tab-page.active { display: block; }
+
+        @media (max-width: 380px) {
+            .header-text h1 { font-size: 1rem; }
+            .logo { width: 42px; height: 42px; }
+            .tab-item { font-size: 0.6rem; padding: 4px 6px; }
+            .tab-item i { font-size: 1.1rem; }
+            .result-title { font-size: 1.3rem; }
+        }
+
+        /* Специальные стили для результатов */
+        .extirpation-title {
+            color: var(--danger);
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .metroplasty-title {
+            color: var(--success);
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Шапка (без изменений) -->
+        <div class="app-header">
+            <div class="logo">
+                <img src="images/logo.jpg" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-heart-pulse\'></i>';" />
+            </div>
+            <div class="header-text">
+                <h1>Перитонит:<br>стратегия сохранения матки</h1>
+                <p>Акушерский перитонит · клинический алгоритм</p>
+            </div>
+        </div>
+
+        <!-- Контент -->
+        <div class="main-content" id="mainContent">
+            <!-- Главная (без изменений) -->
+            <div class="tab-page active" id="pageHome">
+                <div class="glass-card" style="text-align: center;">
+                    <img src="images/logo.jpg" alt="logo" style="width:80px; height:80px; border-radius:20px; margin-bottom:16px;" onerror="this.style.display='none'">
+                    <h2 style="font-size:1.6rem; margin-bottom:12px;">Добро пожаловать!</h2>
+                    <p style="color:#334155; line-height:1.6; font-size:0.9rem;">Интеллектуальный помощник для акушеров-гинекологов и хирургов. Приложение помогает выбрать тактику ведения пациенток с акушерским перитонитом на основе современных клинических рекомендаций.</p>
+                </div>
+                <div class="glass-card">
+                    <h3 style="margin-bottom:8px; font-size:1.1rem;">Цель приложения</h3>
+                    <p style="color:#334155; font-size:0.9rem;">Стандартизировать принятие решений при акушерском перитоните и снизить риск экстирпаций матки.</p>
+                </div>
+                <!-- Кнопка быстрого старта алгоритма -->
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <button class="btn btn-primary" onclick="startAlgorithm()">
+                        <i class="fas fa-play"></i> Начать алгоритм
+                    </button>
+                </div>
+                <div class="glass-card">
+                    <h3 style="margin-bottom:16px; font-size:1.1rem;">Авторы</h3>
+                    <div class="authors-grid">
+                        <div class="author-card">
+                            <div class="author-photo"><img src="images/01.jpg" onerror="this.src='https://via.placeholder.com/70?text=Фото'"></div>
+                            <div class="author-info">
+                                <h4>Чурина Дарья Евгеньевна</h4>
+                                <p>доцент, к.м.н., акушер-гинеколог</p>
+                                <div class="contribution">разработка лечебно-диагностического алгоритма</div>
+                            </div>
+                        </div>
+                        <div class="author-card">
+                            <div class="author-photo"><img src="images/02.jpg" onerror="this.src='https://via.placeholder.com/70?text=Фото'"></div>
+                            <div class="author-info">
+                                <h4>Макаренко Татьяна Александровна</h4>
+                                <p>профессор, д.м.н., акушер-гинеколог</p>
+                                <div class="contribution">разработка лечебно-диагностического алгоритма, общее руководство проектом</div>
+                            </div>
+                        </div>
+                        <div class="author-card">
+                            <div class="author-photo"><img src="images/03.jpg" onerror="this.src='https://via.placeholder.com/70?text=Фото'"></div>
+                            <div class="author-info">
+                                <h4>Черданцев Дмитрий Владимирович</h4>
+                                <p>профессор, д.м.н., хирург</p>
+                                <div class="contribution">разработка лечебно-диагностического алгоритма, общее руководство проектом</div>
+                            </div>
+                        </div>
+                        <div class="author-card">
+                            <div class="author-photo"><img src="images/04.jpg" onerror="this.src='https://via.placeholder.com/70?text=Фото'"></div>
+                            <div class="author-info">
+                                <h4>Носков Игорь Геннадьевич</h4>
+                                <p>доцент, к.м.н., хирург</p>
+                                <div class="contribution">разработка и дизайн</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Алгоритм -->
+            <div class="tab-page" id="pageAlgorithm">
+                <div id="algorithmContainer"></div>
+            </div>
+
+            <!-- Справочник (без изменений) -->
+            <div class="tab-page" id="pageRef">
+                <div class="glass-card">
+                    <h3><i class="fas fa-book-open" style="margin-right:8px;"></i>Критерии сохранения матки</h3>
+                    <ul style="margin-top:12px; list-style:none; font-size:0.85rem;">
+                        <li style="margin-bottom:8px;">✓ Локализованный процесс</li>
+                        <li style="margin-bottom:8px;">✓ Отсутствие распространённого некроза</li>
+                        <li style="margin-bottom:8px;">✓ Возможность радикального иссечения</li>
+                        <li style="margin-bottom:8px;">✓ Стабильная гемодинамика</li>
+                    </ul>
+                </div>
+                <div class="glass-card">
+                    <h3><i class="fas fa-wind" style="margin-right:8px;"></i>Показания к ВАЛ</h3>
+                    <p><span class="badge">Абсолютные</span></p>
+                    <ul style="margin:8px 0 16px 20px; font-size:0.85rem;">
+                        <li>Тяжёлый диффузный перитонит</li>
+                        <li>Анаэробный перитонит</li>
+                        <li>Синдром интраабдоминальной гипертензии</li>
+                    </ul>
+                    <p><span class="badge">Относительные</span></p>
+                    <ul style="margin:8px 0 0 20px; font-size:0.85rem;">
+                        <li>Септический шок (damage control)</li>
+                        <li>Массивный отёк кишечника</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- О проекте (без изменений) -->
+            <div class="tab-page" id="pageAbout">
+                <div class="glass-card">
+                    <h2 style="margin-bottom:12px;">О проекте</h2>
+                    <p style="color:#334155; font-size:0.9rem;">Разработано командой врачей и разработчиков на основе современных рекомендаций и собственного клинического опыта.</p>
+                </div>
+                <div class="glass-card">
+                    <h3 style="margin-bottom:16px;">Контакты</h3>
+                    <div class="contact-card">
+                        <div class="contact-title"><i class="fas fa-envelope" style="color:#0369a1;"></i> По алгоритму и тактике</div>
+                        <a href="mailto:dashsemch@mail.ru" class="contact-email">dashsemch@mail.ru</a>
+                        <div class="contact-name">Чурина Д.Е.</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-title"><i class="fas fa-code" style="color:#0369a1;"></i> По разработке и дизайну</div>
+                        <a href="mailto:igornoskov@mail.ru" class="contact-email">igornoskov@mail.ru</a>
+                        <div class="contact-name">Носков И.Г.</div>
+                    </div>
+                </div>
+                <div class="version-footer">Версия 1.0 (2026)</div>
+            </div>
+
+            <!-- Ссылки (без изменений) -->
+            <div class="tab-page" id="pageLinks">
+                <div class="glass-card">
+                    <h3 style="margin-bottom:16px;">Полезные ссылки</h3>
+                    <a href="https://krasgmu.ru/" target="_blank" class="link-card">
+                        <div class="link-icon"><i class="fas fa-university"></i></div>
+                        <div class="link-text">
+                            <strong>Красноярский государственный медицинский университет</strong>
+                            <small>krasgmu.ru</small>
+                        </div>
+                    </a>
+                    <a href="https://roag-portal.ru/guide" target="_blank" class="link-card">
+                        <div class="link-icon"><i class="fas fa-stethoscope"></i></div>
+                        <div class="link-text">
+                            <strong>Российское общество акушеров-гинекологов</strong>
+                            <small>roag-portal.ru</small>
+                        </div>
+                    </a>
+                    <a href="https://xn--90aifddrld7a.xn--p1ai/" target="_blank" class="link-card">
+                        <div class="link-icon"><i class="fas fa-scalpel"></i></div>
+                        <div class="link-text">
+                            <strong>Российское общество хирургов</strong>
+                            <small>общество-хирургов.рф</small>
+                        </div>
+                    </a>
+                    <a href="https://cr.minzdrav.gov.ru/" target="_blank" class="link-card">
+                        <div class="link-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="link-text">
+                            <strong>Рубрикатор клинических рекомендаций</strong>
+                            <small>cr.minzdrav.gov.ru</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Таб-бар (без изменений) -->
+        <div class="tab-bar">
+            <div class="tab-item active" data-tab="0"><i class="fas fa-home"></i><span>Главная</span></div>
+            <div class="tab-item" data-tab="1"><i class="fas fa-stethoscope"></i><span>Алгоритм</span></div>
+            <div class="tab-item" data-tab="2"><i class="fas fa-book"></i><span>Справочник</span></div>
+            <div class="tab-item" data-tab="3"><i class="fas fa-info-circle"></i><span>О нас</span></div>
+            <div class="tab-item" data-tab="4"><i class="fas fa-link"></i><span>Ссылки</span></div>
+        </div>
+    </div>
+
+    <script>
+    // ---------- Переключение табов (без изменений) ----------
+    const tabItems = document.querySelectorAll('.tab-item');
+    const pages = document.querySelectorAll('.tab-page');
+    function switchTab(index) {
+        tabItems.forEach((item, i) => item.classList.toggle('active', i === index));
+        pages.forEach((page, i) => page.classList.toggle('active', i === index));
+        if (index === 1) initAlgorithm(); // алгоритм
+    }
+    tabItems.forEach((item, idx) => item.addEventListener('click', () => switchTab(idx)));
+
+    // Функция для кнопки "Начать алгоритм" на главной
+    function startAlgorithm() {
+        switchTab(1);
+        resetAlgorithm();
+        showStep('diagnosis');
+    }
+
+    // ---------- НОВЫЙ АЛГОРИТМ (с исправленными кнопками) ----------
+    let history = [];
+    let currentStepId = 'diagnosis';
+
+    const renderers = {
+        diagnosis: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card" style="text-align:center;">
+                    <h2 style="font-size:1.6rem; margin-bottom:12px;">Акушерский перитонит</h2>
+                    <p style="color:#334155; margin-bottom:24px; font-size:0.9rem;">Подтверждён диагноз. Необходима предоперационная подготовка.</p>
+                    <button class="btn btn-primary" onclick="goToStep('preop')">Далее <i class="fas fa-arrow-right"></i></button>
+                </div>
+            `;
+        },
+        preop: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card" style="text-align:center;">
+                    <h2 style="font-size:1.6rem; margin-bottom:12px;">Предоперационная подготовка</h2>
+                    <p style="color:#334155; margin-bottom:16px; font-size:0.9rem;">Инфузия, антибиотики, коррекция гомеостаза (2–4 часа).</p>
+                    <p style="color:#334155; margin-bottom:24px; font-size:0.9rem;">После завершения переходите к оценке доступа.</p>
+                    <button class="btn btn-primary" onclick="goToStep('contraLap')">Далее <i class="fas fa-arrow-right"></i></button>
+                </div>
+            `;
+        },
+        contraLap: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card">
+                    <h2 style="font-size:1.4rem; margin-bottom:12px;">Есть противопоказания к лапароскопии?</h2>
+                    <div class="info-card" style="margin-top:0; margin-bottom:20px;">
+                        <ul style="margin-left:20px; color:#334455;">
+                            <li>Распространённый (диффузный) гнойный перитонит</li>
+                            <li>Септический шок</li>
+                            <li>Вовлечение смежных органов (инфильтраты, абсцессы)</li>
+                            <li>Выраженный спаечный процесс</li>
+                            <li>Общие противопоказания к лапароскопии</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <button class="btn btn-primary" onclick="goToStep('laparotomy')">ДА</button>
+                        <button class="btn btn-primary" onclick="goToStep('diagnosticLap')">НЕТ</button>
+                    </div>
+                </div>
+            `;
+        },
+        laparotomy: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card">
+                    <h2 style="font-size:1.4rem; margin-bottom:16px;">Нижнесрединная лапаротомия</h2>
+                    <p style="margin-bottom:16px; font-weight:600;">Оценка очага инфекции</p>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button class="btn btn-primary" onclick="goToStep('conditionsEvaluation', { from: 'laparotomySuture' })">Секвестрация швов на матке</button>
+                        <button class="btn btn-primary" onclick="goToStep('purulentPeritonitis', { from: 'laparotomyOther' })">Другие причины</button>
+                    </div>
+                </div>
+            `;
+        },
+        diagnosticLap: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card">
+                    <h2 style="font-size:1.4rem; margin-bottom:16px;">Диагностическая лапароскопия</h2>
+                    <p style="margin-bottom:16px; font-weight:600;">Оценка очага инфекции</p>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button class="btn btn-primary" onclick="goToStep('conversion')">Секвестрация швов на матке</button>
+                        <button class="btn btn-primary" onclick="goToStep('purulentPeritonitis', { from: 'lapOther' })">Другие причины</button>
+                    </div>
+                </div>
+            `;
+        },
+        conversion: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card" style="text-align:center;">
+                    <h2 style="font-size:2rem; margin-bottom:12px; color:var(--warning);">КОНВЕРСИЯ</h2>
+                    <p style="margin-bottom:24px;">Переход к лапаротомии.</p>
+                    <button class="btn btn-primary" onclick="goToStep('conditionsEvaluation', { from: 'conversion' })">Далее</button>
+                </div>
+            `;
+        },
+        conditionsEvaluation: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card">
+                    <h2 style="font-size:1.4rem; margin-bottom:16px;">Оценка условий органосохраняющего лечения</h2>
+                    <div class="info-card" style="margin-top:0; margin-bottom:20px;">
+                        <ul style="margin-left:20px; color:#334455;">
+                            <li>✓ Локализованный процесс</li>
+                            <li>✓ Отсутствие распространённого некроза миометрия и метротромбофлебита</li>
+                            <li>✓ Возможность радикального иссечения</li>
+                            <li>✓ Стабильная гемодинамика</li>
+                        </ul>
+                    </div>
+                    <p style="margin-bottom:16px;">Условия соблюдены?</p>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <button class="btn btn-primary" onclick="goToStep('extirpation')">НЕТ</button>
+                        <button class="btn btn-primary" onclick="goToStep('metroplasty')">ДА</button>
+                    </div>
+                </div>
+            `;
+        },
+        extirpation: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card result-screen">
+                    <div class="extirpation-title">ЭКСТИРПАЦИЯ</div>
+                    <p style="font-size:1.2rem; margin-bottom:16px;">рекомендована вакуум-ассистированная лапаростомия</p>
+                    <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
+                </div>
+            `;
+        },
+        metroplasty: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card result-screen">
+                    <div class="metroplasty-title">МЕТРОПЛАСТИКА</div>
+                    <p style="font-size:1.2rem; margin-bottom:16px;">рекомендована вакуум-ассистированная лапаростомия</p>
+                    <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
+                </div>
+            `;
+        },
+        purulentPeritonitis: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card">
+                    <h2 style="font-size:1.4rem; margin-bottom:16px;">Санация очага инфекции</h2>
+                    <p style="margin-bottom:16px;">Перитонит гнойный распространённый?</p>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <button class="btn btn-primary" onclick="goToStep('valRecommendation')">ДА</button>
+                        <button class="btn btn-primary" onclick="goToStep('operationEnd')">НЕТ</button>
+                    </div>
+                </div>
+            `;
+        },
+        valRecommendation: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card result-screen">
+                    <div class="result-icon"><i class="fas fa-wind" style="color:var(--warning);"></i></div>
+                    <h2 class="result-title">рекомендована вакуум-ассистированная лапаростомия</h2>
+                    <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
+                </div>
+            `;
+        },
+        operationEnd: () => {
+            const container = document.getElementById('algorithmContainer');
+            container.innerHTML = `
+                <div class="glass-card result-screen">
+                    <div class="result-icon"><i class="fas fa-flag-checkered" style="color:var(--success);"></i></div>
+                    <h2 class="result-title">Завершение операции</h2>
+                    <button class="btn btn-primary" onclick="resetAlgorithm()">Начать заново</button>
+                </div>
+            `;
+        }
+    };
+
+    function goToStep(stepId, context = {}) {
+        history.push(currentStepId);
+        currentStepId = stepId;
+        renderers[stepId]();
+        updateBackButton();
+    }
+
+    function goBack() {
+        if (history.length > 0) {
+            currentStepId = history.pop();
+            renderers[currentStepId]();
+            updateBackButton();
+        }
+    }
+
+    function updateBackButton() {
+        const container = document.getElementById('algorithmContainer');
+        let backBtn = document.getElementById('algorithmBackBtn');
+        if (!backBtn) {
+            backBtn = document.createElement('button');
+            backBtn.id = 'algorithmBackBtn';
+            backBtn.className = 'btn btn-primary'; // сделаем тоже яркой
+            backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Назад';
+            backBtn.style.position = 'sticky';
+            backBtn.style.bottom = '10px';
+            backBtn.style.marginTop = '20px';
+            backBtn.style.width = '100%';
+            backBtn.onclick = goBack;
+            container.appendChild(backBtn);
+        }
+        backBtn.style.display = history.length > 0 ? 'block' : 'none';
+    }
+
+    function resetAlgorithm() {
+        history = [];
+        currentStepId = 'diagnosis';
+        renderers.diagnosis();
+        updateBackButton();
+    }
+
+    function initAlgorithm() {
+        if (!document.getElementById('algorithmContainer').innerHTML.trim()) {
+            resetAlgorithm();
+        }
+    }
+
+    // Экспорт в глобальную область
+    window.goToStep = goToStep;
+    window.goBack = goBack;
+    window.resetAlgorithm = resetAlgorithm;
+    window.startAlgorithm = startAlgorithm;
+    window.initAlgorithm = initAlgorithm;
+
+    // Инициализация при загрузке
+    if (document.querySelector('.tab-page.active')?.id === 'pageAlgorithm') {
+        initAlgorithm();
+    }
+</script>
+</body>
+</html>
