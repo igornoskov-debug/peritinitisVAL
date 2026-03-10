@@ -517,7 +517,7 @@
             font-size: 0.85rem;
             display: none;
             width: 100%;
-            overflow-x: hidden; /* предотвращаем выезд контейнера */
+            overflow-x: hidden;
         }
         .ref-content.show {
             display: block;
@@ -537,8 +537,8 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 0.75rem;
-            min-width: 600px; /* для SOFA требуется минимум, но можно подобрать */
-            table-layout: auto; /* авто, чтобы колонки подстраивались */
+            min-width: 600px;
+            table-layout: auto;
         }
         .ref-content th, .ref-content td {
             border: 1px solid rgba(2,132,199,0.2);
@@ -556,10 +556,6 @@
             margin-top: 12px;
             margin-bottom: 6px;
             font-size: 0.9rem;
-        }
-        /* Специально для таблицы SOFA – она широкая, оставляем min-width */
-        .ref-content .table-wrapper table {
-            min-width: 600px;
         }
         @media (max-width: 480px) {
             .ref-content table {
@@ -586,7 +582,7 @@
 
         <!-- Контент -->
         <div class="main-content" id="mainContent">
-            <!-- Главная -->
+            <!-- Главная (без изменений) -->
             <div class="tab-page active" id="pageHome">
                 <div class="glass-card" style="text-align: center;">
                     <img src="images/logo.jpg" alt="logo" style="width:80px; height:80px; border-radius:20px; margin-bottom:16px;" onerror="this.style.display='none'">
@@ -642,12 +638,12 @@
                 </div>
             </div>
 
-            <!-- Алгоритм -->
+            <!-- Алгоритм (без изменений) -->
             <div class="tab-page" id="pageAlgorithm">
                 <div id="algorithmContainer"></div>
             </div>
 
-            <!-- Справочник (полностью обновлён с горизонтальной прокруткой для таблиц) -->
+            <!-- Справочник (обновлён: удалена SOFA, добавлены критерии акушерского перитонита) -->
             <div class="tab-page" id="pageRef">
                 <div class="glass-card">
                     <h3 style="margin-bottom:16px;">Справочные материалы</h3>
@@ -750,26 +746,76 @@
                             </div>
                         </div>
 
-                        <!-- 6. Шкала SOFA (с горизонтальной прокруткой) -->
+                        <!-- 6. Критерии акушерского перитонита (вместо SOFA) -->
                         <div class="criteria-item" onclick="toggleRef(6)">
-                            <span>6. Шкала SOFA</span>
+                            <span>6. Критерии акушерского перитонита</span>
                             <i class="fas fa-chevron-down" id="ref-icon-6" style="margin-left:auto; transition: transform 0.2s;"></i>
                         </div>
                         <div id="ref-content-6" class="ref-content">
-                            <p><strong>Sequential Organ Failure Assessment</strong></p>
                             <div class="table-wrapper">
                                 <table>
-                                    <tr><th>Система</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
-                                    <tr><td>Дыхание PaO2/FiO2, мм рт. ст.</td><td>>400</td><td><400</td><td><300</td><td><200 с респ. подд.</td><td><100 с респ. подд.</td></tr>
-                                    <tr><td>Коагуляция Тромбоциты, x10³/мм³</td><td>>150</td><td><150</td><td><100</td><td><50</td><td><20</td></tr>
-                                    <tr><td>Печень Билирубин, мкмоль/л</td><td><20</td><td>20-30</td><td>33-101</td><td>102-204</td><td>>204</td></tr>
-                                    <tr><td>Сердечно-сосудистая Гипотензия</td><td>АДср >70</td><td>АДср <70</td><td>Допамин <5 или добутамин</td><td>Допамин 5-15, адреналин <0.1, норадреналин <0.1</td><td>Допамин >15, адреналин >0.1, норадреналин >0.1</td></tr>
-                                    <tr><td>ЦНС Шкала комы Глазго</td><td>15</td><td>13-14</td><td>10-12</td><td>6-9</td><td><6</td></tr>
-                                    <tr><td>Почки Креатинин, мг/дл (ммоль/л)</td><td><1.2 (110)</td><td>1.2-1.9 (110-170)</td><td>2.0-3.4 (171-299)</td><td>3.5-4.9 (300-440)</td><td>>4.9 (440)</td></tr>
-                                    <tr><td colspan="2"></td><td colspan="2"></td><td>Диурез <500 мл/сут</td><td>Диурез <200 мл/сут</td></tr>
+                                    <tr>
+                                        <th>Критерий</th>
+                                        <th>Реактивная фаза</th>
+                                        <th>Токсическая фаза</th>
+                                        <th>Терминальная фаза</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Основная характеристика</td>
+                                        <td>Локальный воспалительный ответ</td>
+                                        <td>Преобладание синдрома системного воспалительного ответа (SIRS) и интоксикации</td>
+                                        <td>Перитонеальный сепсис, полиорганная дисфункция (MODS)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Состояние пациента</td>
+                                        <td>Возбуждение</td>
+                                        <td>Заторможенность, адинамия</td>
+                                        <td>Сопор, кома, кахексия</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Болевой синдром</td>
+                                        <td>Интенсивный, локальный</td>
+                                        <td>Разлитой, без четкой локализации</td>
+                                        <td>Может притупляться</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Мышечное напряжение</td>
+                                        <td>Защитное, локальное</td>
+                                        <td>Может ослабевать</td>
+                                        <td>Часто отсутствует («доскообразный» живот сменяется вздутым)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Рвота</td>
+                                        <td>Присоединяется</td>
+                                        <td>Застойным содержимым, неукротимая</td>
+                                        <td>Может отсутствовать</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Гемодинамика</td>
+                                        <td>Тахикардия (100-120), гипертензия</td>
+                                        <td>Тахикардия (≥120), гипотензия</td>
+                                        <td>Выраженная тахи- или брадикардия, рефрактерная гипотензия</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Температура</td>
+                                        <td>Лихорадка (~38°C)</td>
+                                        <td>Гектическая лихорадка</td>
+                                        <td>Гипотермия (неблагоприятный прогностический признак)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Дыхание</td>
+                                        <td>Тахипноэ (24-28)</td>
+                                        <td>Выраженное тахипноэ</td>
+                                        <td>Патологические типы дыхания, требуется респираторная поддержка</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Лабораторные данные</td>
+                                        <td>Умеренный лейкоцитоз, сдвиг влево</td>
+                                        <td>Высокий лейкоцитоз, токсическая зернистость нейтрофилов</td>
+                                        <td>Возможна лейкопения (истощение), выраженный сдвиг формулы, рост креатинина, мочевины, билирубина</td>
+                                    </tr>
                                 </table>
                             </div>
-                            <p><strong>Ключ (интерпретация):</strong> SOFA индекс равен сумме всех шести показателей. Минимальный общий балл: 0, максимальный: 24. Чем выше балл, тем больше дисфункция органа.</p>
                         </div>
 
                         <!-- 7. Шкала qSOFA -->
@@ -792,7 +838,7 @@
                 </div>
             </div>
 
-            <!-- О проекте -->
+            <!-- О проекте (без изменений) -->
             <div class="tab-page" id="pageAbout">
                 <div class="glass-card">
                     <h2 style="margin-bottom:12px;">О проекте</h2>
@@ -814,7 +860,7 @@
                 <div class="version-footer">Версия 1.0 (2026)</div>
             </div>
 
-            <!-- Ссылки -->
+            <!-- Ссылки (без изменений) -->
             <div class="tab-page" id="pageLinks">
                 <div class="glass-card">
                     <h3 style="margin-bottom:16px;">Полезные ссылки</h3>
@@ -850,7 +896,7 @@
             </div>
         </div>
 
-        <!-- Таб-бар -->
+        <!-- Таб-бар (без изменений) -->
         <div class="tab-bar">
             <div class="tab-item active" data-tab="0"><i class="fas fa-home"></i><span>Главная</span></div>
             <div class="tab-item" data-tab="1"><i class="fas fa-stethoscope"></i><span>Алгоритм</span></div>
@@ -877,7 +923,7 @@
             resetAlgorithm();
         }
 
-        // ---------- АЛГОРИТМ (обновлённый, все кнопки btn-primary) ----------
+        // ---------- АЛГОРИТМ (без изменений, все кнопки btn-primary) ----------
         let history = [];
         let currentStepId = 'diagnosis';
 
